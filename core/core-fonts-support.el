@@ -17,6 +17,7 @@
 (defun spacemacs/set-default-font (plists)
   "Set the font given the passed PLISTS.
 
+<<<<<<< HEAD
 PLISTS has either the form (\"fontname\" :prop1 val1 :prop2 val2 ...)
 or is a list of such. The first font that can be found will be used.
 
@@ -46,11 +47,11 @@ The return value is nil if no font was found, truthy otherwise."
              (setq fallback-font-name "Arial Unicode MS")
              (setq fallback-font-name2 "Arial Unicode MS"))
             (`windows-nt
-             (setq fallback-font-name "MS Gothic")
+             (setq fallback-font-name "Yu Gothic")
              (setq fallback-font-name2 "Lucida Sans Unicode"))
             (`cygwin
-             (setq fallback-font-name "MS Gothic")
-             (setq fallback-font-name2 "Lucida Sans Unicode"))
+             (setq fallback-font-name "Yu Gothic")
+             (setq fallback-font-name2 "Consolas"))
             (other
              (setq fallback-font-name nil)
              (setq fallback-font-name2 nil)))
@@ -78,7 +79,13 @@ The return value is nil if no font was found, truthy otherwise."
                                 '(#x2295 . #x22a1) fallback-spec nil 'prepend)
               ;; new version lighter
               (set-fontset-font "fontset-default"
-                                '(#x2190 . #x2200) fallback-spec2 nil 'prepend))))
+                                '(#x2190 . #x2200) fallback-spec2 nil 'prepend)
+              ;; box drawing
+              (set-fontset-font "fontset-default"
+                                '(#x2500 . #x2580) fallback-spec2 nil 'prepend)
+              ;; block elements
+              (set-fontset-font "fontset-default"
+                                '(#x2580 . #x25a0) fallback-spec2 nil 'prepend))))
         (throw 'break t)))
     nil))
 
