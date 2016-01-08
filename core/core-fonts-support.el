@@ -73,7 +73,10 @@ PLIST has the form (\"fontname\" :prop1 val1 :prop2 val2 ...)"
                           '(#x2190 . #x2200) fallback-spec2 nil 'prepend)
         ;; box drawing
         (set-fontset-font "fontset-default"
-                          '(#x2500 . #x2580) fallback-spec2 nil 'prepend)))
+                          '(#x2500 . #x2580) fallback-spec2 nil 'prepend)
+        ;; block elements
+        (set-fontset-font "fontset-default"
+                          '(#x2580 . #x25a0) fallback-spec2 nil 'prepend)))
     ))
 
 (defun spacemacs/compute-powerline-height ()
