@@ -40,10 +40,10 @@ PLIST has the form (\"fontname\" :prop1 val1 :prop2 val2 ...)"
        (setq fallback-font-name2 "Arial Unicode MS"))
       (`windows-nt
        (setq fallback-font-name "Yu Gothic")
-       (setq fallback-font-name2 "Yu Gothic"))
+       (setq fallback-font-name2 "Lucida Sans Unicode"))
       (`cygwin
        (setq fallback-font-name "Yu Gothic")
-       (setq fallback-font-name2 "Yu Gothic"))
+       (setq fallback-font-name2 "Lucida Sans Unicode"))
       (other
        (setq fallback-font-name nil)
        (setq fallback-font-name2 nil)))
@@ -60,8 +60,21 @@ PLIST has the form (\"fontname\" :prop1 val1 :prop2 val2 ...)"
              (fallback-spec2 (apply 'font-spec
                                     :name fallback-font-name2
                                     fallback-props)))
+        ;; window numbers
         (set-fontset-font "fontset-default"
-                          nil fallback-spec nil 'prepend)))
+                          '(#x2776 . #x2793) fallback-spec nil 'prepend)
+        ;; mode-line circled letters
+        (set-fontset-font "fontset-default"
+                          '(#x24b6 . #x24fe) fallback-spec nil 'prepend)
+        ;; mode-line additional characters
+        (set-fontset-font "fontset-default"
+                          '(#x2295 . #x22a1) fallback-spec nil 'prepend)
+        ;; new version lighter
+        (set-fontset-font "fontset-default"
+                          '(#x2190 . #x2200) fallback-spec2 nil 'prepend)
+        ;; box drawing
+        (set-fontset-font "fontset-default"
+                          '(#x2500 . #x2580) fallback-spec2 nil 'prepend)))
     ))
 
 (defun spacemacs/compute-powerline-height ()
