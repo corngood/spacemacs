@@ -28,7 +28,14 @@
         evil-matchit
         ggtags
         counsel-gtags
-        omnisharp
+        (omnisharp :location (recipe
+                            :fetcher github
+                            :repo "corngood/omnisharp-emacs"
+                            :branch "dev"
+                            :files ("*.el"
+                                    "src/*.el"
+                                    "src/actions/*.el")
+                            ))
         flycheck
         ))
 
