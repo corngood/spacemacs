@@ -27,7 +27,14 @@
         (csharp-mode :toggle (version< emacs-version "29.0.60"))
         evil-matchit
         ggtags
-        omnisharp
+        (omnisharp :location (recipe
+                            :fetcher github
+                            :repo "corngood/omnisharp-emacs"
+                            :branch "dev"
+                            :files ("*.el"
+                                    "src/*.el"
+                                    "src/actions/*.el")
+                            ))
         flycheck
         ))
 
