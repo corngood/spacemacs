@@ -11,7 +11,9 @@
 
 (setq syntax-checking-packages
   '(
-    flycheck
+    (flycheck :location (recipe
+                          :fetcher github
+                          :repo corngood/flycheck))
     flycheck-pos-tip
     popwin
     ))
