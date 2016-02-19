@@ -140,3 +140,4 @@
     :post-init
     (dolist (mode '(c-mode c++-mode))
       (spacemacs/setup-helm-cscope mode))))
+
