@@ -112,7 +112,9 @@
   (spacemacs/helm-gtags-define-keys-for-mode 'c++-mode))
 
 (defun c-c++/post-init-semantic ()
-  (spacemacs/add-to-hooks 'semantic-mode '(c-mode-hook c++-mode-hook)))
+  (spacemacs/add-to-hooks 'semantic-mode '(c-mode-hook c++-mode-hook))
+  (dolist (mode '(c-mode c++-mode))
+    (spacemacs/set-leader-keys-for-major-mode mode "gg" 'semantic-ia-fast-jump)))
 
 (defun c-c++/post-init-srefactor ()
   (spacemacs/set-leader-keys-for-major-mode 'c-mode "r" 'srefactor-refactor-at-point)
