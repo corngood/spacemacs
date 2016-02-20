@@ -109,8 +109,9 @@
   (spacemacs/helm-gtags-define-keys-for-mode 'c++-mode))
 
 (defun c-c++/post-init-semantic ()
-  (semantic/enable-semantic-mode 'c-mode)
-  (semantic/enable-semantic-mode 'c++-mode))
+  (dolist (mode '(c-mode c++-mode))
+    (semantic/enable-semantic-mode mode)
+    (spacemacs/set-leader-keys-for-major-mode mode "gg" 'semantic-ia-fast-jump)))
 
 (defun c-c++/post-init-srefactor ()
   (spacemacs/set-leader-keys-for-major-mode 'c-mode "r" 'srefactor-refactor-at-point)
