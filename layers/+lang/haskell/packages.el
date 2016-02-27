@@ -20,7 +20,10 @@
     (flycheck-haskell :toggle (configuration-layer/package-usedp 'flycheck))
     ggtags
     ghc
-    haskell-mode
+    (haskell-mode :location (recipe
+                              :fetcher github
+                              :repo "corngood/haskell-mode"
+                              :branch "stack_session"))
     haskell-snippets
     helm-gtags
     (helm-hoogle :toggle (configuration-layer/package-usedp 'helm))
