@@ -18,7 +18,10 @@
     flycheck
     flycheck-haskell
     ghc
-    haskell-mode
+    (haskell-mode :location (recipe
+                              :fetcher github
+                              :repo "corngood/haskell-mode"
+                              :branch "stack_session"))
     haskell-snippets
     hindent
     shm
