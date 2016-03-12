@@ -6,9 +6,15 @@
 
 (defun cmake/init-cpputils-cmake ()
   (use-package cpputils-cmake
+    :commands (cppcm-reload-all)
     :defer t
+    :init
+    (progn
+      (add-hook 'c-mode-hook 'cppcm-reload-all)
+      (add-hook 'c++-mode-hook 'cppcm-reload-all))
     :config
-    (spacemacs/set-leader-keys "cR" 'cppcm-reload-all)))
+    (progn
+      (spacemacs/set-leader-keys "cR" 'cppcm-reload-all))))
 
 (defun spacemacs/cmake-gdb ()
   (interactive)
@@ -19,4 +25,3 @@
 
 (defun cmake/post-init-gdb-mi ()
   (spacemacs/set-leader-keys "d" 'spacemacs/cmake-gdb))
-
