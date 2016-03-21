@@ -1,11 +1,7 @@
 (setq cmake-packages
       '(
         gdb-mi
-        (cpputils-cmake :location (recipe
-                                   :fetcher github
-                                   :repo "corngood/cpputils-cmake"
-                                   :branch "semantic_includes"
-                                   ))
+        cpputils-cmake
         ))
 
 (defun cmake/init-cpputils-cmake ()
