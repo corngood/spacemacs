@@ -23,5 +23,8 @@
 (defvar haskell-enable-hindent-style nil
   "Style to use for formatting with hindent; available are: fundamental johan-tibell chris-done gibiansky. If nil hindent is disabled.")
 
-(defvar haskell-enable-ghc-mod-support t
+(defvar haskell-enable-ghc-mod-support nil
   "If non-nil ghc-mod support is enabled")
+
+(defvar haskell-enable-intero t
+  "If non-nil intero is enabled")

@@ -18,13 +18,11 @@
     flycheck
     flycheck-haskell
     ghc
-    (haskell-mode :location (recipe
-                              :fetcher github
-                              :repo "corngood/haskell-mode"
-                              :branch "stack_session"))
+    haskell-mode
     haskell-snippets
     hindent
     shm
+    intero
     ))
 
 (defun haskell/init-cmm-mode ()
@@ -32,7 +30,7 @@
     :defer t))
 
 (defun haskell/post-init-flycheck ()
-  (spacemacs/add-flycheck-hook 'haskell-mode-hook))
+  (spacemacs/add-flycheck-hook (if haskell-enable-intero 'haskell-mode-hook 'intero-mode-hook)))
 
 (when (configuration-layer/layer-usedp 'syntax-checking)
   (defun haskell/init-flycheck-haskell ()
@@ -80,7 +78,7 @@
      ;; Cabal commands or generally things worth notifying.
      haskell-notify-p t
      ;; To enable tags generation on save.
-     haskell-tags-on-save t
+     haskell-tags-on-save (not haskell-enable-intero)
      ;; Remove annoying error popups
      haskell-interactive-popup-errors nil
      ;; Better import handling
@@ -110,7 +108,7 @@
 
       ;; hooks
       (add-hook 'haskell-mode-hook 'spacemacs/init-haskell-mode)
-      (unless haskell-enable-ghc-mod-support
+      (unless (or haskell-enable-ghc-mod-support haskell-enable-intero)
         (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
       ;; prefixes
@@ -130,7 +128,7 @@
           (haskell-process-do-type 1)))
 
       (spacemacs/set-leader-keys-for-major-mode 'haskell-mode
-        "gg"  'haskell-mode-jump-to-def-or-tag
+        "gg"  (if haskell-enable-intero 'intero-goto-definition 'haskell-mode-jump-to-def-or-tag)
         "gi"  'haskell-navigate-imports
         "f"   'haskell-mode-stylish-buffer
 
@@ -299,6 +297,13 @@
 
       (define-key shm-map (kbd "C-j") nil)
       (define-key shm-map (kbd "C-k") nil))))
+
+(defun haskell/init-intero ()
+  (use-package intero
+    :defer t
+    :if haskell-enable-intero
+    :init
+    (add-hook 'haskell-mode-hook 'intero-mode)))
 
 (when (configuration-layer/layer-usedp 'auto-completion)
   (defun haskell/post-init-company ()
