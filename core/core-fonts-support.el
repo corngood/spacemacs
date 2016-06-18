@@ -42,7 +42,7 @@ PLIST has the form (\"fontname\" :prop1 val1 :prop2 val2 ...)"
        (setq fallback-font-name2 "Lucida Sans Unicode"))
       (`cygwin
        (setq fallback-font-name "Yu Gothic")
-       (setq fallback-font-name2 "Lucida Sans Unicode"))
+       (setq fallback-font-name2 "Consolas"))
       (other
        (setq fallback-font-name nil)
        (setq fallback-font-name2 nil)))
