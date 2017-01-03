@@ -31,5 +31,6 @@
   (configuration-layer/sync)
   (spacemacs-buffer/display-info-box)
   (spacemacs/setup-startup-hook)
-  (require 'server)
-  (unless (server-running-p) (server-start)))
+  ;; (require 'server)
+  ;; (unless (server-running-p) (server-start))
+  )
