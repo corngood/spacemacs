@@ -50,3 +50,7 @@ and the arguments for flyckeck-clang based on a project-specific text file."
       (setq-local company-clang-arguments flags)
       (setq-local company-c-headers-path-system (append '("/usr/include" "/usr/local/include") dirs))
       (setq-local flycheck-clang-args flags))))
+
+(defun c-c++//semantic-find-file-noselect (origfunc file &rest args)
+  (let ((flycheck-global-modes nil))
+    (apply origfunc file args)))

@@ -114,7 +114,8 @@
 (defun c-c++/post-init-semantic ()
   (spacemacs/add-to-hooks 'semantic-mode '(c-mode-hook c++-mode-hook))
   (dolist (mode '(c-mode c++-mode))
-    (spacemacs/set-leader-keys-for-major-mode mode "gg" 'semantic-ia-fast-jump)))
+    (spacemacs/set-leader-keys-for-major-mode mode "gg" 'semantic-ia-fast-jump))
+  (advice-add 'semantic-find-file-noselect :around #'c-c++//semantic-find-file-noselect))
 
 (defun c-c++/post-init-srefactor ()
   (spacemacs/set-leader-keys-for-major-mode 'c-mode "r" 'srefactor-refactor-at-point)
