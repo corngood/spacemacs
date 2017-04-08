@@ -351,3 +351,7 @@ and the arguments for flyckeck-clang based on a project-specific text file."
   (spacemacs/lsp-define-extensions "c-c++" 'member-types "$ccls/member" `(:kind 2))
   (spacemacs/lsp-define-extensions "c-c++" 'member-functions "$ccls/member" `(:kind 3))
   (spacemacs/lsp-define-extensions "c-c++" 'member-vars "$ccls/member" `(:kind 0)))
+
+(defun c-c++//semantic-find-file-noselect (origfunc file &rest args)
+  (let ((flycheck-global-modes nil))
+    (apply origfunc file args)))
