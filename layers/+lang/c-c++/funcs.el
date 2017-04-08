@@ -400,3 +400,7 @@ is non-nil."
   "Add before-save hook for c-c++-organize-includes."
   (add-hook 'before-save-hook
             #'spacemacs//c-c++-organize-includes-on-save nil t))
+
+(defun c-c++//semantic-find-file-noselect (origfunc file &rest args)
+  (let ((flycheck-global-modes nil))
+    (apply origfunc file args)))
