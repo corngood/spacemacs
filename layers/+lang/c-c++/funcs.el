@@ -417,3 +417,7 @@ is non-nil."
     (call-interactively fun)
     ;; return `t' to say "indent" been applied
     t))
+
+(defun c-c++//semantic-find-file-noselect (origfunc file &rest args)
+  (let ((flycheck-global-modes nil))
+    (apply origfunc file args)))
