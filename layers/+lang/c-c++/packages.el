@@ -239,7 +239,8 @@
   (add-hook 'c-mode-local-vars-hook #'spacemacs//c-c++-setup-semantic)
   (add-hook 'c++-mode-local-vars-hook #'spacemacs//c-c++-setup-semantic)
   (dolist (mode '(c-mode c++-mode))
-    (spacemacs/set-leader-keys-for-major-mode mode "gg" 'semantic-ia-fast-jump)))
+    (spacemacs/set-leader-keys-for-major-mode mode "gg" 'semantic-ia-fast-jump))
+  (advice-add 'semantic-find-file-noselect :around #'c-c++//semantic-find-file-noselect))
 
 (defun c-c++/post-init-srefactor ()
   (dolist (mode c-c++-modes)
