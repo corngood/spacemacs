@@ -31,8 +31,8 @@
         helm-gtags
         (omnisharp :location (recipe
                             :fetcher github
-                            :repo "corngood/omnisharp-emacs"
-                            :branch "dev"
+                            :repo "omnisharp/omnisharp-emacs"
+                            :branch "master"
                             :files ("*.el"
                                     "src/*.el"
                                     "src/actions/*.el")
