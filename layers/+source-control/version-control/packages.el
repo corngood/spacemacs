@@ -291,6 +291,7 @@
         :title "Smerge Transient State"
         :hint-is-doc t
         :dynamic-hint (spacemacs//smerge-ts-hint)
+        :on-enter (require 'smerge-mode)
         :bindings
         ;; move
         ("n" smerge-next)
