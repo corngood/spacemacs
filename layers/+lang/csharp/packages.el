@@ -24,7 +24,11 @@
 (setq csharp-packages
       '(
         company
-        csharp-mode
+        (csharp-mode
+         :location (recipe
+                    :fetcher github
+                    :repo "corngood/csharp-mode"
+                    :branch "emacs-27-performance-fix"))
         evil-matchit
         ggtags
         counsel-gtags
