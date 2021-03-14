@@ -37,7 +37,7 @@
                                     "src/actions/*.el")
                             ))
         flycheck
-        ))
+        dap-mode))
 
 (defun csharp/init-omnisharp ()
   (use-package omnisharp
@@ -70,3 +70,23 @@
 
 (defun csharp/post-init-counsel-gtags ()
   (spacemacs/counsel-gtags-define-keys-for-mode 'csharp-mode))
+
+(defun csharp/pre-init-dap-mode ()
+  (with-eval-after-load 'dap-mode
+    (dap-register-debug-provider
+     "unity"
+     (lambda (conf)
+       (plist-put conf :path
+                  (concat
+                   (projectile-project-root)
+                   (file-name-as-directory "Library")
+                   "EditorInstance.json"))
+       (plist-put conf :cwd (projectile-project-root))
+       (plist-put conf :dap-server-path '("UnityDebug"))))
+    (dap-register-debug-template
+     "Unity Editor"
+     (list :type "unity"
+           :request "launch"
+           :name "Unity Editor")))
+  (add-to-list 'spacemacs--dap-supported-modes 'csharp-mode)
+  (add-hook 'csharp-mode-local-vars-hook (lambda () (require 'dap-mode))))
