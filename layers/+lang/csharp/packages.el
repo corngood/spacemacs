@@ -25,7 +25,8 @@
       '((csharp-mode :location built-in)
         evil-matchit
         ggtags
-        flycheck))
+        flycheck
+        dap-mode))
 
 (defun csharp/init-csharp-mode ()
   (use-package csharp-mode
@@ -45,3 +46,23 @@
 
 (defun csharp/post-init-ggtags ()
   (add-hook 'csharp-mode-local-vars-hook #'spacemacs/ggtags-mode-enable))
+
+(defun csharp/pre-init-dap-mode ()
+  (with-eval-after-load 'dap-mode
+    (dap-register-debug-provider
+     "unity"
+     (lambda (conf)
+       (plist-put conf :path
+                  (concat
+                   (projectile-project-root)
+                   (file-name-as-directory "Library")
+                   "EditorInstance.json"))
+       (plist-put conf :cwd (projectile-project-root))
+       (plist-put conf :dap-server-path '("UnityDebug"))))
+    (dap-register-debug-template
+     "Unity Editor"
+     (list :type "unity"
+           :request "launch"
+           :name "Unity Editor")))
+  (add-to-list 'spacemacs--dap-supported-modes 'csharp-mode)
+  (add-hook 'csharp-mode-local-vars-hook (lambda () (require 'dap-mode))))
