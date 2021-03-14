@@ -42,7 +42,7 @@
                                     "src/actions/*.el")
                             ))
         flycheck
-        ))
+        dap-mode))
 
 (defun csharp/init-omnisharp ()
   (use-package omnisharp
@@ -78,3 +78,17 @@
 
 (defun csharp/post-init-helm-gtags ()
   (spacemacs/helm-gtags-define-keys-for-mode 'csharp-mode))
+
+(defun csharp/pre-init-dap-mode ()
+  (with-eval-after-load 'dap-mode
+    (dap-register-debug-provider
+     "unity"
+     (lambda (conf)
+       (plist-put conf :dap-server-path '("UnityDebug"))))
+    (dap-register-debug-template
+     "Unity Editor"
+     (list :type "unity"
+           :request "launch"
+           :name "Unity Editor")))
+  (add-to-list 'spacemacs--dap-supported-modes 'csharp-mode)
+  (add-hook 'csharp-mode-local-vars-hook (lambda () (require 'dap-mode))))
