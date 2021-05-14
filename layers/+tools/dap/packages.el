@@ -22,7 +22,11 @@
 
 
 (defconst dap-packages
-  '(dap-mode
+  '((dap-mode
+     :location (recipe
+                :fetcher github
+                :repo "corngood/dap-mode"
+                :files (:defaults "icons")))
     posframe))
 
 (defun dap/init-dap-mode ()
