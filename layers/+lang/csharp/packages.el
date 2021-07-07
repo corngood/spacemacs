@@ -84,6 +84,11 @@
     (dap-register-debug-provider
      "unity"
      (lambda (conf)
+       (plist-put conf :path
+                  (concat
+                   (projectile-project-root)
+                   (file-name-as-directory "Library")
+                   "EditorInstance.json"))
        (plist-put conf :dap-server-path '("UnityDebug"))))
     (dap-register-debug-template
      "Unity Editor"
