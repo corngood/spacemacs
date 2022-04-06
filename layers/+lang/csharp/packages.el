@@ -29,7 +29,7 @@
         ggtags
         (omnisharp :location (recipe
                             :fetcher github
-                            :repo "omnisharp/omnisharp-emacs"
+                            :repo "corngood/omnisharp-emacs"
                             :branch "master"
                             :files ("*.el"
                                     "src/*.el"
