@@ -34,8 +34,8 @@
                             :branch "master"
                             :files ("*.el"
                                     "src/*.el"
-                                    "src/actions/*.el")
-                            ))
+                                    "src/actions/*.el"))
+                   :toggle (eq csharp-backend 'omnisharp))
         flycheck
         dap-mode))
 
