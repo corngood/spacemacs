@@ -24,21 +24,10 @@
 
 ;; backend
 
-(defun spacemacs//csharp-setup-backend ()
-  "Conditionally setup layer csharp based on backend."
-  (pcase csharp-backend
-    ('omnisharp (spacemacs//csharp-setup-omnisharp))
-    ('lsp (spacemacs//csharp-setup-lsp))))
-
 (defun spacemacs//csharp-setup-company ()
   "Conditionally setup company based on backend."
   (when (eq csharp-backend 'omnisharp)
     (spacemacs//csharp-setup-omnisharp-company)))
-
-(defun spacemacs//csharp-configure ()
-  "Conditionally configure csharp layer based on backend."
-  (when (eq csharp-backend 'omnisharp)
-    (spacemacs//csharp-configure-omnisharp)))
 
 
 ;; omnisharp
