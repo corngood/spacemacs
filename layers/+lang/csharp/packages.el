@@ -24,7 +24,8 @@
 (setq csharp-packages
       '(
         company
-        (csharp-mode :toggle (version< emacs-version "29.0.60"))
+        ;; (csharp-mode :toggle (version< emacs-version "29.0.60"))
+        csharp-mode
         evil-matchit
         ggtags
         counsel-gtags
@@ -43,9 +44,9 @@
   (use-package omnisharp
     :defer t
     :init
-    (spacemacs//csharp-setup-backend)
+    (spacemacs//csharp-setup-omnisharp)
     :config
-    (spacemacs//csharp-configure)
+    (spacemacs//csharp-configure-omnisharp)
     ))
 
 (defun csharp/post-init-company ()
@@ -53,7 +54,10 @@
 
 (defun csharp/init-csharp-mode ()
   (use-package csharp-mode
-    :defer t))
+    :defer t
+    :config
+    (when (eq csharp-backend 'lsp)
+      (spacemacs//csharp-setup-lsp))))
 
 (defun csharp/post-init-evil-matchit ()
   (with-eval-after-load 'evil-matchit
