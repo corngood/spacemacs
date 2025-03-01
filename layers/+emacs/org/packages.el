@@ -757,11 +757,9 @@ Headline^^            Visit entry^^               Filter^^                    Da
 
 (defun org/init-org-modern ()
   (use-package org-modern
-    :defer t
-    :init
-    (add-hook 'org-mode-hook 'org-modern-mode)
-    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-
+    :after org
+    :config
+    (global-org-modern-mode)
     (spacemacs/set-leader-keys-for-major-mode 'org-mode
       "Tm" 'org-modern-mode)))
 
