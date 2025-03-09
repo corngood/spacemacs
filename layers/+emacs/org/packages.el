@@ -761,7 +761,8 @@ Headline^^            Visit entry^^               Filter^^                    Da
     :config
     (global-org-modern-mode)
     (spacemacs/set-leader-keys-for-major-mode 'org-mode
-      "Tm" 'org-modern-mode)))
+      "Tm" 'org-modern-mode
+      "TM" 'global-org-modern-mode)))
 
 (defun org/init-org-pomodoro ()
   (use-package org-pomodoro
