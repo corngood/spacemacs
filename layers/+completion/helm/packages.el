@@ -36,8 +36,6 @@
     helm-make
     helm-mode-manager
     helm-org
-    (helm-posframe :toggle helm-use-posframe
-                   )
     helm-projectile
     ;; FIXME Remove obsolete packages helm-swoop
     ;; helm-ag etc. (see https://github.com/melpa/melpa/pull/9520)
@@ -392,20 +390,6 @@
   (use-package helm-org
     :commands (helm-org-in-buffer-headings)
     :defer t))
-
-(defun helm/init-helm-posframe ()
-  (use-package helm-posframe
-    :defer t
-    :init
-    (setq helm-posframe-poshandler 'posframe-poshandler-frame-center)
-    (setq helm-posframe-width (round (* 0.618 (frame-width))))
-    (setq helm-posframe-height (round (* 0.618 (frame-height))))
-    (setq helm-posframe-parameters
-          '((internal-border-width . 2)
-            (left-fringe . 4)
-            (right-fringe . 4)
-            (undecorated . nil)))
-    (helm-posframe-enable)))
 
 (defun helm/pre-init-helm-projectile ()
   ;; overwrite projectile settings
