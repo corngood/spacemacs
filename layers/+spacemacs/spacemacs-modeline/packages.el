@@ -49,7 +49,6 @@
 
 (defun spacemacs-modeline/init-spaceline ()
   (use-package spaceline-config
-    :commands (spaceline-compile spaceline-define-segment)
     :init
     (add-hook 'spacemacs-post-user-config-hook
               'spacemacs/spaceline-config-startup-hook)
