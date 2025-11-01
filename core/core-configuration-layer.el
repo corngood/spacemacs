@@ -1917,7 +1917,7 @@ RNAME is the name symbol of another existing layer."
                ;; Consider built-in packages, but only when
                ;; they are installed from a different location.
                (or (not (package-built-in-p pkg-name))
-                   (and pkg (not (eq 'built-in (oref pkg :location))))))
+                   (and pkg (not (eq 'built-in (oref pkg location))))))
       (setq new-version
             (if recipe
                 (or (quelpa-checkout (configuration-layer//make-quelpa-recipe pkg)
