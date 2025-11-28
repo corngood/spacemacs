@@ -49,8 +49,13 @@
               (mapcar (lambda (item)
                         (cl-destructuring-bind (obsolete-name new-name since) item
                           (when (boundp obsolete-name)
-                            (format "`%s' is obsolete since %s, use `%s' instead."
-                                    obsolete-name since new-name))))
+                            (let ((suggestion
+                                   (if (string-prefix-p "hybrid-mode-" (symbol-name obsolete-name))
+                                       "  (try updating the `hybrid-mode' package with \\[configuration-layer/update-packages])"
+                                     "")))
+                              (substitute-command-keys
+                               (format "`%s' is obsolete since %s, use `%s' instead.%s"
+                                       obsolete-name since new-name suggestion))))))
                       spacemacs-obsolete-variable-list)))
 
 (provide 'core-obsolete)
