@@ -37,3 +37,94 @@
   "Conditionally setup sql backend."
   (when (eq sql-backend 'lsp)
     (lsp-deferred)))
+
+(defun spacemacs//sql-source (products)
+  "return a source for helm selection"
+  `((name . "SQL Products")
+    (candidates . ,(mapcar (lambda (product)
+                             (cons (sql-get-product-feature (car product) :name)
+                                   (car product)))
+                           products))
+    (action . (lambda (candidate) (helm-marked-candidates)))))
+
+(defun spacemacs/sql-highlight ()
+  "set SQL dialect-specific highlighting"
+  (interactive)
+  (let ((product (car (helm
+                       :sources (list (spacemacs//sql-source sql-product-alist))))))
+    (sql-set-product product)))
+
+(defun spacemacs/sql-start ()
+  "set SQL dialect-specific highlighting and start inferior SQLi process"
+  (interactive)
+  (let ((product (car (helm
+                       :sources (list (spacemacs//sql-source
+                                       (cl-remove-if-not
+                                        (lambda (product) (sql-get-product-feature (car product) :sqli-program))
+                                        sql-product-alist)))))))
+    (sql-set-product product)
+    (sql-product-interactive product)))
+
+(defun spacemacs/sql-send-string-and-focus ()
+  "Send a string to SQLi and switch to SQLi in `insert state'."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region t))
+    (call-interactively 'sql-send-string)
+    (evil-insert-state)))
+
+(defun spacemacs/sql-send-buffer-and-focus ()
+  "Send the buffer to SQLi and switch to SQLi in `insert state'."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region t))
+    (sql-send-buffer)
+    (evil-insert-state)))
+
+(defun spacemacs/sql-send-paragraph-and-focus ()
+  "Send the paragraph to SQLi and switch to SQLi in `insert state'."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region t))
+    (sql-send-paragraph)
+    (evil-insert-state)))
+
+(defun spacemacs/sql-send-region-and-focus (start end)
+  "Send region to SQLi and switch to SQLi in `insert state'."
+  (interactive "r")
+  (let ((sql-pop-to-buffer-after-send-region t))
+    (sql-send-region start end)
+    (evil-insert-state)))
+
+(defun spacemacs/sql-send-line-and-next-and-focus ()
+  "Send the current line to SQLi and switch to SQLi in `insert state'."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region t))
+    (sql-send-line-and-next)))
+
+(defun spacemacs/sql-send-string ()
+  "Send a string to SQLi and stays in the same region."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region nil))
+    (call-interactively 'sql-send-string)))
+
+(defun spacemacs/sql-send-buffer ()
+  "Send the buffer to SQLi and stays in the same region."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region nil))
+    (sql-send-buffer)))
+
+(defun spacemacs/sql-send-paragraph ()
+  "Send the paragraph to SQLi and stays in the same region."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region nil))
+    (sql-send-paragraph)))
+
+(defun spacemacs/sql-send-region (start end)
+  "Send region to SQLi and stays in the same region."
+  (interactive "r")
+  (let ((sql-pop-to-buffer-after-send-region nil))
+    (sql-send-region start end)))
+
+(defun spacemacs/sql-send-line-and-next ()
+  "Send the current line to SQLi and stays in the same region."
+  (interactive)
+  (let ((sql-pop-to-buffer-after-send-region nil))
+    (sql-send-line-and-next)))
