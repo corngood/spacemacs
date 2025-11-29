@@ -21,14 +21,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-(defun spacemacs/sql-populate-products-list (&rest args)
-  "Update Spacemacs list of sql products"
-  (setq
-   spacemacs-sql-highlightable sql-product-alist
-   spacemacs-sql-startable (cl-remove-if-not
-                            (lambda (product) (sql-get-product-feature (car product) :sqli-program))
-                            sql-product-alist)))
-
 (defun spacemacs//sql-setup-company ()
   "Conditionally setup company based on backend."
   (pcase sql-backend

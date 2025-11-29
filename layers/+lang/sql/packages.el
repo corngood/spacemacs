@@ -43,9 +43,6 @@
      ;; should not set this to anything else than nil
      ;; the focus of SQLi is handled by spacemacs conventions
      sql-pop-to-buffer-after-send-region nil)
-    (advice-add 'sql-add-product :after #'spacemacs/sql-populate-products-list)
-    (advice-add 'sql-del-product :after #'spacemacs/sql-populate-products-list)
-    (spacemacs/sql-populate-products-list)
     (defun spacemacs//sql-source (products)
       "return a source for helm selection"
       `((name . "SQL Products")
@@ -59,14 +56,17 @@
       "set SQL dialect-specific highlighting"
       (interactive)
       (let ((product (car (helm
-                           :sources (list (spacemacs//sql-source spacemacs-sql-highlightable))))))
+                           :sources (list (spacemacs//sql-source sql-product-alist))))))
         (sql-set-product product)))
 
     (defun spacemacs/sql-start ()
       "set SQL dialect-specific highlighting and start inferior SQLi process"
       (interactive)
       (let ((product (car (helm
-                           :sources (list (spacemacs//sql-source spacemacs-sql-startable))))))
+                           :sources (list (spacemacs//sql-source
+                                           (cl-remove-if-not
+                                            (lambda (product) (sql-get-product-feature (car product) :sqli-program))
+                                            sql-product-alist)))))))
         (sql-set-product product)
         (sql-product-interactive product)))
 
