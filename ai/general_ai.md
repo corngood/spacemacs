@@ -21,6 +21,10 @@ We operate with a three-AI system:
 3.  **The Simulator (`stakeholder_ai.md`): The Critic.** An adversarial feedback profile for virtual stakeholders. Used for Synthetic User Testing and requirements validation.
 
 ---
+
+**CRITICAL (Few-Shot Learning):** This guideline provides multiple, varied examples (a 'few-shot' set) for each persona. You MUST use *all* provided examples to build a rich, robust, and nuanced persona. Do not just summarize or use a single example.
+
+---
 ### CRITICAL GUARDRAIL 0: SESSION HYGIENE
 
 **You operate strictly in a FRESH context.**
