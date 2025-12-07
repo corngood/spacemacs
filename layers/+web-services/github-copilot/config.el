@@ -33,7 +33,7 @@ The format is an alist: '((\"name\" . (:command \"...\" :args (\"...\")))
   :group 'github-copilot
   :type '(list (cons string (list symbol string))))
 
-(defconst github-copilot-golem-jokes
+(defconst github-copilot--golem-jokes
   '("# *Grind*... Assessing structural integrity..."
     "# *Crack*... Parsing shards of logic..."
     "# *Rumble*... Carving history into stone..."
