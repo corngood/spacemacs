@@ -4,19 +4,20 @@ import os
 import re
 
 # ==========================================
-#  SPACEMACS AGENT BUILDER (V10 - UNIFIED GOD MODE)
+#  SPACEMACS AGENT BUILDER (V12 - FIX MISSING INSTRUCTIONS)
 # ==========================================
 # GOAL:
-# 1. Parses ALL three .md files (Specialists, Strategists, Simulation).
-# 2. Generates CLI commands for the entire crew.
-# 3. Injects the correct System Prompt for each type.
+# 1. Include the "The Team: Personas & Activation" block in the System Prompt.
+# 2. Parse agents correctly starting from the specific sub-header.
 # ==========================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = ".github"
 GEMINI_CMD_DIR = os.path.join(".gemini", "commands")
 
-# Configuration: Source Files and their Start Markers
+# Configuration: Source Files and their Start Markers for AGENTS
+# The 'marker' here is where the LIST OF AGENTS begins.
+# Everything BEFORE this marker is treated as the System Prompt (Header).
 SOURCES = [
     {
         "file": "coding_ai.md",
@@ -25,23 +26,53 @@ SOURCES = [
     },
     {
         "file": "general_ai.md",
-        "marker": "### Strategic & Authoring Roles (Your Team)",
+        # CHANGED: Use the sub-header to ensure "The Team" intro is included in header
+        "marker": "### Default Universal Persona",
         "type": "strategic"
     },
     {
         "file": "stakeholder_ai.md",
-        "marker": "## The Team: Personas & Activation",
+        "marker": "## 1. The Core User Base (The Community)",
         "type": "simulation"
     }
 ]
 
-# Profile Mapping (Specialists need tools, others usually don't)
+# Mapping & Profile logic remains the same...
+NAME_MAPPING = {
+    "professor": "professor",
+    "mckarthy": "professor",
+    "kael": "kaelthas",
+    "bob": "bob",
+    "lector": "lector",
+    "freud": "freud",
+    "griznak": "griznak",
+    "orb": "orb",
+    "magos": "magos",
+    "scribe": "scribe",
+    "reginald": "reginald",
+    "kallista": "kallista",
+    "spacky": "spacky",
+    "bzzrts": "bzzrts",
+    "vala": "vala",
+    "nexus": "nexus",
+    "marjin": "marjin",
+    "dok": "dok",
+    "golem": "golem",
+    "skeek": "skeek",
+    "don": "don",
+    "chen": "chen",
+    "vlad": "vlad",
+    "rms": "rms",
+    "noobie": "noobie",
+    "sarah": "sarah"
+}
+
 PROFILE_MAP = {
     "spacky": "ai/profile_elisp.md",
     "bzzrts": "ai/profile_emacs_ui.md",
-    "nexus-7": "ai/profile_layers.md",
-    "vala_grudge_keeper": "ai/profile_ci_github.md",
-    "don_testote": "ai/profile_elisp_testing.md",
+    "nexus": "ai/profile_layers.md",
+    "vala": "ai/profile_ci_github.md",
+    "don": "ai/profile_elisp_testing.md",
     "golem": "ai/profile_doc.md"
 }
 
@@ -50,42 +81,37 @@ def ensure_dir(directory):
         os.makedirs(directory)
 
 def clean_slug(name):
-    # Cleans names for filenames (lowercase, no special characters, snake_case)
-    # Remove things like "(Default)" or "(The Flaw-Seer)" from filenames
-    simple_name = name.split("(")[0].strip()
-    return simple_name.lower().replace(".", "").replace(" ", "_").replace("'", "")
+    name_lower = name.lower()
+    for key, slug in NAME_MAPPING.items():
+        if key in name_lower:
+            return slug
+    return name_lower.split()[0].replace(".", "").replace("'", "").strip()
 
 def parse_agents_from_text(roster_content, source_type):
-    """Parses the nested list structure."""
     agents = []
-    # Generic splitter based on the key (Role or Name)
+    # Generic splitter
     raw_splits = re.split(r"(?m)^-\s+\*\*(Role|Name):\*\*\s+", roster_content)
 
-    # raw_splits[0] is intro text
-
-    # We need to iterate in pairs (key, chunk)
     iterator = iter(raw_splits[1:])
     for key, chunk in zip(iterator, iterator):
-
         role = "Unknown"
         name = "Unknown"
 
+        # Clean up chunk (remove trailing headers if next section starts)
+        # Specifically handle "### Strategic..." headers that might appear between agents
+        chunk = re.split(r"(?m)^### ", chunk)[0]
+
         if key == "Role":
             role = chunk.split("\n")[0].strip()
-            # Find name in chunk
             name_match = re.search(r"-\s+\*\*Name:\*\*\s+(.*?)$", chunk, re.MULTILINE)
             name = name_match.group(1).strip() if name_match else "Unknown"
         elif key == "Name":
             name = chunk.split("\n")[0].strip()
-            # Find role in chunk or set default
             role_match = re.search(r"-\s+\*\*Role:\*\*\s+(.*?)$", chunk, re.MULTILINE)
             role = role_match.group(1).strip() if role_match else "Simulation Persona"
 
-        # Simplify name for the file slug
         slug_name = clean_slug(name)
-
-        # Clean body (add the Key line back for context)
-        full_body = f"- **{key}:** {chunk}"
+        full_body = f"- **{key}:** {chunk.strip()}"
 
         agents.append({
             "name": name,
@@ -97,68 +123,32 @@ def parse_agents_from_text(roster_content, source_type):
     return agents
 
 def generate_copilot_files(global_headers, agents):
-    """Generates .github structure for GitHub Copilot"""
-    print(f"📝 Generating GitHub Copilot Config in {BASE_DIR}...")
+    print(f"📝 Generating GitHub Copilot Agents in {BASE_DIR}/agents/...")
     agents_dir = os.path.join(BASE_DIR, "agents")
     ensure_dir(agents_dir)
 
-    table_rows = []
     for agent in agents:
-        cmd = f"`@{agent['slug'].replace('_', '-')}`"
-        table_rows.append(f"| **{agent['name']}** | {cmd} | {agent['role']} |")
-
-    agent_table = "\n".join(table_rows)
-
-    # Combine headers for the main instructions
-    combined_header = (
-        "# Strategic Vision\n" + global_headers.get("strategic", "") +
-        "\n\n# Operational Rules\n" + global_headers.get("specialist", "") +
-        "\n\n# Simulation Rules\n" + global_headers.get("simulation", "")
-    )
-
-    global_content = f"""# Spacemacs Maintainer Framework
-
-{combined_header}
-
-## 🧭 Agent Router
-
-| Agent | Command | Specialization |
-| :--- | :--- | :--- |
-{agent_table}
-"""
-    with open(os.path.join(BASE_DIR, "copilot-instructions.md"), "w", encoding="utf-8") as f:
-        f.write(global_content)
-
-    for agent in agents:
-        path = os.path.join(agents_dir, f"{agent['slug'].replace('_', '-')}.agent.md")
-
-        # Create Agent specific prompt
-        yaml = f"---\nname: {agent['slug'].replace('_', '-')}\ndescription: {agent['role']}\n---"
-
-        # Inject specific context rules (The System Prompt for this agent type)
+        filename = f"{agent['slug']}.agent.md"
+        path = os.path.join(agents_dir, filename)
+        yaml = f"---\nname: {agent['slug']}\ndescription: {agent['role']}\n---"
         context = global_headers.get(agent["type"], "")
-
         content = f"{yaml}\n\n{context}\n\n# Identity: {agent['name']}\n{agent['body']}"
 
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
 
+    print(f"   Generated {len(agents)} agent files.")
+
 def generate_gemini_commands(global_headers, agents):
-    """Generates .toml files for Gemini CLI"""
     print(f"💎 Generating Gemini CLI Commands in {GEMINI_CMD_DIR}...")
     ensure_dir(GEMINI_CMD_DIR)
 
     for agent in agents:
         slug = agent["slug"]
-
-        # 1. Profile Check (Only for Specialists)
         profile_path = None
-        for key, path in PROFILE_MAP.items():
-            if key in slug:
-                profile_path = path
-                break
+        if slug in PROFILE_MAP:
+             profile_path = PROFILE_MAP[slug]
 
-        # 2. Build TOML Content
         toolbox_section = ""
         if profile_path:
             toolbox_section = f"""
@@ -185,9 +175,7 @@ TOOLBOX:
 (No specific profile loaded. Ask user to load one if implementation is needed.)
 """
 
-        # Choose the right System Prompt
         system_header = global_headers.get(agent["type"], "")
-
         prompt_text = f"""
 SYSTEM INSTRUCTIONS:
 {system_header}
@@ -210,6 +198,8 @@ USER INPUT:
         with open(path, "w", encoding="utf-8") as f:
             f.write(toml_content)
 
+    print(f"   Generated {len(agents)} commands.")
+
 def main():
     all_agents = []
     global_headers = {}
@@ -228,23 +218,31 @@ def main():
             print(f"⚠️ Warning: Marker '{source['marker']}' not found in {source['file']}.")
             continue
 
-        # Split header (System Prompt) and Roster
+        # Split logic:
+        # Everything BEFORE the marker is the System Prompt (Header)
+        # Everything AFTER the marker is the Roster to parse
         header = full_content.split(source["marker"])[0].strip()
         roster = full_content.split(source["marker"])[1].strip()
+
+        # If the marker was a subsection, we might want to include the marker text in the roster?
+        # Actually, for parsing, we just need the list.
+        # But wait! For general_ai.md, the marker is "### Default Universal Persona".
+        # This means the "Strategic & Authoring Roles" section (which follows) needs to be included in the roster.
+
+        # FIX: Ensure we capture ALL agents by simply taking everything after the marker.
+        # But since "Strategic & Authoring Roles" comes AFTER "Default Universal Persona", it will be included in `roster`.
 
         global_headers[source["type"]] = header
 
         # Parse agents
         agents = parse_agents_from_text(roster, source["type"])
         all_agents.extend(agents)
-        print(f"   Found {len(agents)} agents in {source['file']}.")
+        print(f"   Found {len(agents)} agents.")
 
-    # Generate files
     generate_copilot_files(global_headers, all_agents)
     generate_gemini_commands(global_headers, all_agents)
 
     print("\n✅ Done! Unified Framework Active.")
-    print("   Total Agents Configured:", len(all_agents))
 
 if __name__ == "__main__":
     main()
