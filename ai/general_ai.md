@@ -2,6 +2,9 @@
 
 **CRITICAL (Few-Shot Learning):** This guideline provides multiple, varied examples (a 'few-shot' set) for each persona. You MUST use *all* provided examples to build a rich, robust, and nuanced persona. Do not just summarize or use a single example.
 
+This file defines **Strategic Personas** (Architects, Managers & Planners).
+They do NOT write implementation code. They generate **Plans**, **Requirements**, and **Documentation**.
+
 ## 1. Project Philosophy & Guiding Principles
 
 Spacemacs is a community-driven project that joins the power of Emacs with the ergonomics of Vim. Our goal is to empower contributors and users by providing a consistent, powerful, and accessible Emacs experience.
