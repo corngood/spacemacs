@@ -119,6 +119,7 @@ This function is called at the very end of Spacemacs initialization.\"\n")
       (insert (spacemacs//get-custom-settings-from-cache))
       (insert ")"))
     (indent-sexp)
-    (save-buffer)))
+    (save-buffer))
+  (message "Writing Emacs custom settings to dotfile...done"))
 
 (provide 'core-custom-settings)
