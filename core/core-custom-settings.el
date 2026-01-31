@@ -117,7 +117,6 @@ Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization.\"\n")
     (insert (spacemacs//get-custom-settings-from-cache))
     (insert ")")
-    (save-buffer)
-    (kill-buffer (current-buffer))))
+    (save-buffer)))
 
 (provide 'core-custom-settings)
