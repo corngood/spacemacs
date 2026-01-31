@@ -27,7 +27,7 @@
 
 (defun spacemacs/initialize-custom-file ()
   "Initialize the custom file.
-Does not initialize writing the custom file into the dotfile. To
+Does not initialize writing the custom file into the dotfile.  To
 complete that part see `spacemacs/initialize-custom-file-sync'."
   ;; setup auto-rewrite of custom settings only if custom-file
   ;; has not been set by the user
@@ -94,7 +94,7 @@ end of the buffer.
         (goto-char pos)))))
 
 (defun spacemacs//get-custom-settings-from-cache ()
-  "Returns the custom settings from `spacemacs--custom-file'."
+  "Return the custom settings from `spacemacs--custom-file'."
   (with-current-buffer (let ((find-file-visit-truename t)
                              (delay-mode-hooks t))
                          (find-file-noselect spacemacs--custom-file))
@@ -104,7 +104,7 @@ end of the buffer.
     (buffer-substring-no-properties (point) (point-max))))
 
 (defun spacemacs/write-custom-settings-to-dotfile ()
-  "Write `dotspacemacs/emacs-custom-settings' function in the dotfile"
+  "Write `dotspacemacs/emacs-custom-settings' function in the dotfile."
   (message "Writing Emacs custom settings to dotfile...")
   (with-current-buffer (let ((find-file-visit-truename t)
                              (delay-mode-hooks t))
