@@ -110,15 +110,14 @@ end of the buffer.
                              (delay-mode-hooks t))
                          (find-file-noselect (dotspacemacs/location)))
     (spacemacs//delete-emacs-custom-settings)
-    (let ((standard-output (current-buffer)))
-      (princ "(defun dotspacemacs/emacs-custom-settings ()\n")
-      (princ "  \"Emacs custom settings.
+    (insert "(defun dotspacemacs/emacs-custom-settings ()\n")
+    (insert "  \"Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization.\"\n")
-      (princ (spacemacs//get-custom-settings-from-cache))
-      (princ ")")
-      (save-buffer)
-      (kill-buffer (current-buffer)))))
+    (insert (spacemacs//get-custom-settings-from-cache))
+    (insert ")")
+    (save-buffer)
+    (kill-buffer (current-buffer))))
 
 (provide 'core-custom-settings)
