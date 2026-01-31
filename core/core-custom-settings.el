@@ -93,33 +93,31 @@ end of the buffer.
             (setq pos (line-beginning-position))))
         (goto-char pos)))))
 
-(defun spacemacs//get-custom-settings-from-cache ()
-  "Return the custom settings from `spacemacs--custom-file'."
-  (with-current-buffer (let ((find-file-visit-truename t)
-                             (delay-mode-hooks t))
-                         (find-file-noselect spacemacs--custom-file))
-    (goto-char (point-min))
-    ;; Skip all whitespace and comments.
-    (while (forward-comment 1))
-    (buffer-substring-no-properties (point) (point-max))))
-
 (defun spacemacs/write-custom-settings-to-dotfile ()
   "Write `dotspacemacs/emacs-custom-settings' function in the dotfile."
   (message "Writing Emacs custom settings to dotfile...")
-  (with-current-buffer (let ((find-file-visit-truename t)
-                             (delay-mode-hooks t))
-                         (find-file-noselect (dotspacemacs/location)))
-    (spacemacs//delete-emacs-custom-settings)
-    (save-excursion
-      (insert "(defun dotspacemacs/emacs-custom-settings ()\n")
-      (insert "  \"Emacs custom settings.
+  (with-temp-buffer
+    (insert-file-contents spacemacs--custom-file)
+    (delay-mode-hooks (emacs-lisp-mode))
+    ;; Skip all whitespace and comments.
+    (while (forward-comment 1))
+    (delete-region (point-min) (point))
+    ;; the temp buffer now contains the settings to be written to the dotfile
+    (let ((settings-buffer (current-buffer)))
+      (with-current-buffer (let ((find-file-visit-truename t)
+                                 (delay-mode-hooks t))
+                             (find-file-noselect (dotspacemacs/location)))
+        (spacemacs//delete-emacs-custom-settings)
+        (save-excursion
+          (insert "(defun dotspacemacs/emacs-custom-settings ()\n")
+          (insert "  \"Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization.\"\n")
-      (insert (spacemacs//get-custom-settings-from-cache))
-      (insert ")"))
-    (indent-sexp)
-    (save-buffer))
+          (insert-buffer-substring settings-buffer)
+          (insert ")"))
+        (indent-sexp)
+        (save-buffer))))
   (message "Writing Emacs custom settings to dotfile...done"))
 
 (provide 'core-custom-settings)
