@@ -343,7 +343,9 @@
                 'evil-visualstar/begin-search-backward)))
 
 (defun spacemacs-evil/init-hideshow ()
-  (add-hook 'prog-mode-hook 'spacemacs//enable-hs-minor-mode))
+  (add-hook 'prog-mode-hook 'spacemacs//enable-hs-minor-mode)
+  (with-eval-after-load 'hideshow
+    (spacemacs|hide-lighter hs-minor-mode)))
 
 (defun spacemacs-evil/init-vi-tilde-fringe ()
   (spacemacs|do-after-display-system-init
