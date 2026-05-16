@@ -740,7 +740,7 @@ number of recent files to show in each project."
   'spacemacs-dotspacemacs-init)
 
 (spacemacs|defc dotspacemacs-startup-buffer-multi-digit-delay 0.4
-  "The minimum delay in seconds between number key presses."
+  "The maximum delay in seconds between number key presses."
   'number
   'spacemacs-dotspacemacs-init)
 
