@@ -240,14 +240,8 @@ of directories to file basenames."
     (defvar load-hints '()))
   ;; Load the default theme.
   (spacemacs/load-default-theme)
-  ;; Set the default font after display system is initialized.
-  (spacemacs|do-after-display-system-init
-    (unless (spacemacs/set-default-font dotspacemacs-default-font)
-      (spacemacs-buffer/warning
-       "Cannot find any of the specified fonts (%s)! Font settings may not be correct."
-       (if (listp (car dotspacemacs-default-font))
-           (mapconcat 'car dotspacemacs-default-font ", ")
-         (car dotspacemacs-default-font)))))
+  ;; Set the default font.
+  (spacemacs//set-default-font-from-dotfile)
   ;; Inhibit the default Emacs startup screen.
   (setq inhibit-startup-screen t)
   ;; Go to the Spacemacs buffer on startup.

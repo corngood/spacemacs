@@ -922,6 +922,10 @@ Returns non nil if the layer has been effectively inserted."
     (setq dotspacemacs--user-config-elapsed-time
           (float-time (time-subtract (current-time) stime)))))
 
+;; TODO: A substantial portion of `spacemacs/init' is duplicated here.  Perhaps
+;; they could share the same underlying implementation, and thus make
+;; `dotspacemacs/sync-configuration-layers' more reliably synchronize all of the
+;; settings that are specified in the dotfile.
 (defun dotspacemacs/sync-configuration-layers (&optional arg)
   "Synchronize declared layers in dotfile with spacemacs.
 
@@ -944,6 +948,7 @@ Called with `C-u C-u' skips `dotspacemacs/user-config' _and_ preliminary tests."
                 (setq dotspacemacs-editing-style
                       (dotspacemacs//read-editing-style-config
                        dotspacemacs-editing-style))
+                (spacemacs//set-default-font-from-dotfile)
                 (dotspacemacs/call-user-env)
                 (configuration-layer/load)
                 (if (member arg '((4) (16)))
