@@ -628,7 +628,7 @@ The ~package-quickstart~ will collect all the ~*-autoloads.el~ into one file
 After Spacemacs startup, manually execute the function
 ~package-quickstart-refreshe~ to generate the package quickstart file,
 then set the dotfile variable ~dotspacemacs-enable-package-quickstart~
-to ~t~.  On the next startup, the Spacemacs will set up packages by
+to ~t~. On the next startup, the Spacemacs will set up packages by
 loading the ~package-quickstart-file~ rather than calling
 ~package-initialize~ (which will scan ~package-user-dir~ and activate
 packages one by one).
