@@ -815,7 +815,6 @@ Headline^^            Visit entry^^               Filter^^                    Da
 
 (defun org/init-org-rich-yank ()
   (use-package org-rich-yank
-    :ensure t
     :demand t
     :init
     (spacemacs/set-leader-keys-for-major-mode 'org-mode
