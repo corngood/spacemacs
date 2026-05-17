@@ -1177,14 +1177,14 @@ error recovery."
            (dotspacemacs/location)))
   ;; protect global values of these variables
   (dlet (dotspacemacs-additional-packages
-        dotspacemacs-configuration-layer-path
-        dotspacemacs-configuration-layers
-        dotspacemacs-excluded-packages
-        dotspacemacs-install-packages
-        ;; `passed-tests' and `total-tests' are expected to be dynamically bound
-        ;; when `spacemacs//test-list' is called.
-        (passed-tests 0)
-        (total-tests 0))
+         dotspacemacs-configuration-layer-path
+         dotspacemacs-configuration-layers
+         dotspacemacs-excluded-packages
+         dotspacemacs-install-packages
+         ;; `passed-tests' and `total-tests' are expected to be dynamically bound
+         ;; when `spacemacs//test-list' is called.
+         (passed-tests 0)
+         (total-tests 0))
     (load (dotspacemacs/location))
     (dotspacemacs/layers)
     (spacemacs//test-list 'stringp
