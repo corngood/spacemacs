@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (setq cg-packages '((cg-mode :location local)))
 
 (defun cg/init-cg-mode ()
